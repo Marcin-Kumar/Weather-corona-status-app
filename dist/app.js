@@ -256,21 +256,33 @@ function getCountryName (countryCode) {
 
 
 class DataRetriever {
-    constructor(city = "Zürich", units = "metric") {
+    constructor(city = "Zürich", countryCode = "CH", country = "Switzerland", units = "metric") {
         this.apiKey = "31495b0483e0738d3e0db6316a4dab4d";
         this.city = city;
+        this.countryCode = countryCode;
+        this.country = country;
         this.units = units;
     }
 
-    createSearchUrl(city) {
-        return `https://api.openweathermap.org/data/2.5/find?q=${city}&appid=${this.apiKey}&units=${this.units}`
+    createWeatherSearchUrl(city) {
+        return `https://api.openweathermap.org/data/2.5/find?q=${city}&appid=${this.apiKey}&units=${this.units}`;
     }
 
-    fetchWeather(city = this.city) {
-        fetch(this.createSearchUrl(city))
+    createCoronaSearchUrl() {
+        return `https://covid19-api.org/api/diff/${this.countryCode}`;
+    }
+
+    fetchData(city = this.city) {
+        fetch(this.createWeatherSearchUrl(city))
             .then((response) => response.json())
             .then((data) => this.displayWeather(data))
             .catch((error) => console.log(console.error(error)));
+    
+        fetch(this.createCoronaSearchUrl())
+            .then((response) => response.json())
+            .then((data) => this.displayCoronaData(data))
+            .catch((error) => console.log(console.error(error)));
+    
     }
 
     displayWeather(data) {
@@ -287,5 +299,14 @@ class DataRetriever {
         document.querySelector("#forecast").innerText = description;
         document.querySelector("#humidity").innerText = humidity;
         document.querySelector("#wind").innerText = speed;
+    }
+
+    displayCoronaData(data) {
+        const coronaData = data;
+
+        document.querySelector("#currentDate").innerText = `${coronaData.last_update}`;
+        document.querySelector("#currentCases").innerText = `${coronaData.new_cases}(${coronaData.new_cases_percentage}%)`;
+        document.querySelector("#currentDeaths").innerText = `${coronaData.new_deaths}(${coronaData.new_deaths_percentage}%)`;
+        document.querySelector("#currentRecovered").innerText = `${coronaData.new_recovered}(${coronaData.new_recovered_percentage}%)`;
     }
 }
