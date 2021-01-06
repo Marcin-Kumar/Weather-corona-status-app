@@ -253,14 +253,9 @@ function getCountryName (countryCode) {
         return countryCode;
     }
 }
-
-
 class DataRetriever {
-    constructor(city = "Zürich", countryCode = "CH", country = "Switzerland", units = "metric") {
+    constructor(units = "metric") {
         this.apiKey = "31495b0483e0738d3e0db6316a4dab4d";
-        this.city = city;
-        this.countryCode = countryCode;
-        this.country = country;
         this.units = units;
     }
 
@@ -272,17 +267,17 @@ class DataRetriever {
         return `https://covid19-api.org/api/diff/${this.countryCode}`;
     }
 
-    fetchData(city = this.city) {
+    fetchData(city) {
         fetch(this.createWeatherSearchUrl(city))
             .then((response) => response.json())
-            .then((data) => this.displayWeather(data))
-            .catch((error) => console.log(console.error(error)));
-    
-        fetch(this.createCoronaSearchUrl())
-            .then((response) => response.json())
-            .then((data) => this.displayCoronaData(data))
-            .catch((error) => console.log(console.error(error)));
-    
+            .then((data) => { 
+                this.displayWeather(data) 
+                fetch(this.createCoronaSearchUrl())
+                    .then((response) => response.json())
+                    .then((data) => this.displayCoronaData(data))
+                    .catch((error) => console.error(error));
+                })
+            .catch((error) => console.error(error));
     }
 
     displayWeather(data) {
@@ -291,10 +286,12 @@ class DataRetriever {
         const { temp, humidity } = data.list[0].main;
         const { speed } = data.list[0].wind;
         const { country } = data.list[0].sys;
+        this.city = name;
+        this.countryCode = country;
         this.country = getCountryName(country);
         document.querySelector("#region").innerText = name;
         document.querySelector("#country").innerText = this.country;
-        document.querySelector(".icon").src = `http://openweathermap.org/img/wn/${icon}@2x.png`;
+        document.querySelector(".icon").src = `http://openweathermap.org/img/wn/${icon}.png`;
         document.querySelector("#temparature").innerText = `${temp}°C`;
         document.querySelector("#forecast").innerText = description;
         document.querySelector("#humidity").innerText = humidity;
@@ -305,8 +302,26 @@ class DataRetriever {
         const coronaData = data;
 
         document.querySelector("#currentDate").innerText = `${coronaData.last_update}`;
-        document.querySelector("#currentCases").innerText = `${coronaData.new_cases}(${coronaData.new_cases_percentage}%)`;
-        document.querySelector("#currentDeaths").innerText = `${coronaData.new_deaths}(${coronaData.new_deaths_percentage}%)`;
-        document.querySelector("#currentRecovered").innerText = `${coronaData.new_recovered}(${coronaData.new_recovered_percentage}%)`;
+        document.querySelector("#currentCases").innerText = `${coronaData.new_cases} (${coronaData.new_cases_percentage}%)`;
+        document.querySelector("#currentDeaths").innerText = `${coronaData.new_deaths} (${coronaData.new_deaths_percentage}%)`;
+        document.querySelector("#currentRecovered").innerText = `${coronaData.new_recovered} (${coronaData.new_recovered_percentage}%)`;
+    }
+
+    search() {
+        let searchTerm = document.querySelector(".search-bar").value;
+        this.fetchData(searchTerm);
+        
     }
 }
+
+document.querySelector(".search .button-primary").addEventListener("click", function() {
+    let locationRetriever = new DataRetriever();
+    locationRetriever.search();
+});
+
+document.querySelector(".search-bar").addEventListener("keyup", function(event) {
+    if(event.key == "Enter") {
+        let locationRetriever = new DataRetriever();
+        locationRetriever.search();
+    }
+});
