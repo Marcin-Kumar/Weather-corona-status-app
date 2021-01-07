@@ -1,5 +1,10 @@
 [[redirects]]
 from = "/"
+to = "/dist/"
+status = 200
+
+[[redirects]]
+from = "/"
 to = "/dist/index.html"
 status = 200
 
