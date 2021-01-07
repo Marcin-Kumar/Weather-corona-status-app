@@ -12,3 +12,14 @@ status = 200
 from = "/index.html"
 to = "/dist/index.html"
 status = 200
+
+[[redirects]]
+from = "/css/baseStyle.min.css"
+to = "/dist/css/baseStyle.min.css"
+status = 200
+
+[[redirects]]
+from = "/app.js"
+to = "/dist/app.js"
+status = 200
+
