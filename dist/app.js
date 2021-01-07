@@ -296,6 +296,9 @@ class DataRetriever {
         document.querySelector("#forecast").innerText = description;
         document.querySelector("#humidity").innerText = humidity;
         document.querySelector("#wind").innerText = speed;
+        document.querySelector(".weather").classList.remove("loading");
+        document.querySelector(".location").classList.remove("loading");
+
     }
 
     displayCoronaData(data) {
@@ -305,10 +308,15 @@ class DataRetriever {
         document.querySelector("#currentCases").innerText = `${coronaData.new_cases} (${coronaData.new_cases_percentage}%)`;
         document.querySelector("#currentDeaths").innerText = `${coronaData.new_deaths} (${coronaData.new_deaths_percentage}%)`;
         document.querySelector("#currentRecovered").innerText = `${coronaData.new_recovered} (${coronaData.new_recovered_percentage}%)`;
+        document.querySelector(".coronavirus").classList.remove("loading");
+        document.body.style.backgroundImage = `url(https://source.unsplash.com/1600x900/?${this.country})`;
     }
 
     search() {
         let searchTerm = document.querySelector(".search-bar").value;
+        document.querySelector(".weather").classList.add("loading");
+        document.querySelector(".location").classList.add("loading");
+        document.querySelector(".coronavirus").classList.add("loading");
         this.fetchData(searchTerm);
         
     }
