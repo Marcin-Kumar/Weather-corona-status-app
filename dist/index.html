@@ -13,22 +13,26 @@
             <input type="text" class="search-bar" placeholder="Search Location">
             <button class="button-primary"><i class="fas fa-search-location fa-2x"></i></button>
         </div>
-        <div class="location">
-            <h1 class="header-1">Country: USA</h1>
-            <h1 class="header-1">Region: Denver</h1>
+        <div class="location loading">
+            <h1 class="header-1">Country: <span id="country">USA</span></h1>
+            <h1 class="header-1">Region: <span id="region">Denver</span></h1>
         </div>
-        <div class="weather">
+        <div class="weather loading">
             <h3 class="header-1">Weather status</h3>
-            <h2 class="temparature header-2">Temparature: 51°C</h2>
-            <img src="" alt="" class="icon" />
-            <div class="forecast">Forecast: Cloudy</div>
-            <div class="humidity">Humidity: 60%</div>
-            <div class="wind">Wind speed: 6.2km/h</div>
+            <h2 class="header-1 margin-bottom-1">Temparature: <span id="temparature">51°C</span></h2>
+            <div class="flex">
+                <div>Forecast: <span id="forecast">Cloudy</span></div>
+                <img src="http://openweathermap.org/img/wn/13n.png" alt="weather Image" class="icon" />
+            </div>
+            <div>Humidity: <span id="humidity">60</span>%</div>
+            <div>Wind speed: <span id="wind">6.2</span>km/h</div>
         </div>
-        <div class="coronavirus">
+        <div class="coronavirus loading">
             <h3 class="header-1">Coronavirus status</h3>
-            <div class="cases-today">Cases today: 5516</div>
-            <div class="cases-million">Cases per million: 346</div>
+            <div>Last Update Date: <span id="currentDate">2021-01-06</span></div>
+            <div>Cases: <span id="currentCases">5516 (+1%)</span></div>
+            <div>Deaths: <span id="currentDeaths">346 (-0.8%)</span></div>
+            <div>Recovered: <span id="currentRecovered">324 (-0.3%)</span></div>
         </div>
     </div>
 
